@@ -36,7 +36,7 @@ public class Usuario {
 	@NotBlank(message = "O campo deve ser preenchido!")
 	private String senha;
 
-	@Column(name = "data_nascimento", nullable = false)
+	@Column(name = "data_nascimento")
 	private LocalDate dataNascimento;
 	
 
