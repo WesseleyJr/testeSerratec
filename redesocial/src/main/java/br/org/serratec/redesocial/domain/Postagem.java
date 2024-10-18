@@ -4,11 +4,12 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+//import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -39,7 +40,7 @@ public class Postagem {
 
 //	@JsonIgnore
 	@JsonManagedReference
-	@OneToMany(mappedBy = "postagem")
+	@OneToMany(mappedBy = "postagem", fetch = FetchType.EAGER)
 	private List<Comentario> comentarios;
 
 	public Postagem(Long id, String conteudo, LocalDate dataCriacao,
