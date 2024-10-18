@@ -30,9 +30,10 @@ public class Comentario {
 	@Column(nullable= false)
 	private LocalDate dataComentario;
 	
+	@JsonBackReference
 	@ManyToOne
 	@JoinColumn(name = "id_post")
-	private Post post;
+	private Postagem postagem;
 	
 	@ManyToOne
 	@JoinColumn(name = "id_usuario")
@@ -62,12 +63,12 @@ public class Comentario {
 		this.dataComentario = dataComentario;
 	}
 
-	public Post getPost() {
-		return post;
+	public Postagem getPost() {
+		return postagem;
 	}
 
-	public void setPost(Post post) {
-		this.post = post;
+	public void setPost(Postagem postagem) {
+		this.postagem = postagem;
 	}
 
 	public Usuario getUsuario() {

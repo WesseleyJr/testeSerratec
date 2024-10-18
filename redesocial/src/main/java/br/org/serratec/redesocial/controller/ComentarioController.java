@@ -16,58 +16,53 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.org.serratec.redesocial.domain.Usuario;
-import br.org.serratec.redesocial.repository.UsuarioRepository;
-import br.org.serratec.redesocial.service.UsuarioService;
+import br.org.serratec.redesocial.domain.Comentario;
+import br.org.serratec.redesocial.repository.ComentarioRepository;
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping("/usuario")
-public class UsuarioController {
+@RequestMapping("/comentarios")
+public class ComentarioController {
 
 	@Autowired
-	private UsuarioService usuarioService;
-
-	@Autowired
-	private UsuarioRepository usuarioRepository;
-
+	private ComentarioRepository comentarioRepository;
+	
 	@GetMapping
-	public ResponseEntity<List<Usuario>> listar() {
-		return ResponseEntity.ok(usuarioService.findAll());
+	public ResponseEntity<List<Comentario>> listar() {
+		return ResponseEntity.ok(comentarioRepository.findAll());
 	}
-
+	
 	@GetMapping("/{id}")
-	public ResponseEntity<Usuario> buscar(@PathVariable Long id) {
-		Optional<Usuario> usuarioOpt = usuarioRepository.findById(id);
-		if (usuarioOpt.isPresent()) {
-			return ResponseEntity.ok(usuarioOpt.get());
+	public ResponseEntity<Comentario> buscar(@PathVariable Long id) {
+		Optional<Comentario> comentarioOpt = comentarioRepository.findById(id);
+		if (comentarioOpt.isPresent()) {
+			return ResponseEntity.ok(comentarioOpt.get());
 		}
 		return ResponseEntity.notFound().build();
 	}
-
+	
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
-	public Usuario adicionar(@Valid @RequestBody Usuario usuario) {
-		return usuarioRepository.save(usuario);
+	public ResponseEntity<Comentario> adicionar(@Valid @RequestBody Comentario comentario) {
+		return ResponseEntity.ok(comentarioRepository.save(comentario));
 	}
-
+	
 	@PutMapping("/{id}")
-	public ResponseEntity<Usuario> atualizar(@PathVariable Long id, @Valid @RequestBody Usuario usuario) {
-		if (!usuarioRepository.existsById(id)) {
+	public ResponseEntity<Comentario> alterar(@PathVariable Long id, @Valid @RequestBody Comentario comentario) {
+		if (!comentarioRepository.existsById(id)) {
 			return ResponseEntity.notFound().build();
 		}
-		usuario.setId(id);
-		usuario = usuarioRepository.save(usuario);
-		return ResponseEntity.ok(usuario);
+		comentario.setId(id);
+		comentario = comentarioRepository.save(comentario);
+		return ResponseEntity.ok(comentario);
 	}
-
+	
 	@DeleteMapping("/{id}")
-	public ResponseEntity<Usuario> deletar(@PathVariable Long id) {
-		if (!usuarioRepository.existsById(id)) {
+	public ResponseEntity<Comentario> deletar(@PathVariable Long id) {
+		if (!comentarioRepository.existsById(id)) {
 			return ResponseEntity.notFound().build();
 		}
-		usuarioRepository.deleteById(id);
+		comentarioRepository.deleteById(id);
 		return ResponseEntity.ok().build();
 	}
-
 }

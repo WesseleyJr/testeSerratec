@@ -4,18 +4,16 @@ import java.time.LocalDate;
 import java.util.Objects;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
 
 @Entity
 @Table(name = "relacionamento")
-public class Seguidor {
+public class Relacionamento {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
 	@Column(nullable = false)
-	@NotBlank(message = "Preencha o campo!")
 	private LocalDate dataInicioSeguimento;
 
 	@ManyToOne
@@ -26,10 +24,10 @@ public class Seguidor {
 	@JoinColumn(name = "seguido", nullable = false)
 	private Usuario usuarioSeguido;
 
-	public Seguidor() {
+	public Relacionamento() {
 	}
 
-	public Seguidor(LocalDate dataInicioSeguimento, Usuario usuarioSeguidor, Usuario usuarioSeguido) {
+	public Relacionamento(LocalDate dataInicioSeguimento, Usuario usuarioSeguidor, Usuario usuarioSeguido) {
 		this.dataInicioSeguimento = dataInicioSeguimento;
 		this.usuarioSeguidor = usuarioSeguidor;
 		this.usuarioSeguido = usuarioSeguido;
@@ -80,7 +78,7 @@ public class Seguidor {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Seguidor other = (Seguidor) obj;
+		Relacionamento other = (Relacionamento) obj;
 		return Objects.equals(id, other.id);
 	}
 }

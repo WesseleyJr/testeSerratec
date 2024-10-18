@@ -18,8 +18,8 @@ import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
 
 @Entity
-@Table(name = "post")
-public class Post {
+@Table(name = "postagem")
+public class Postagem {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -36,10 +36,11 @@ public class Post {
 	@JoinColumn(name = "id_usuario")
 	private Usuario usuario;
 
-	@OneToMany(mappedBy = "post")
+	@JsonManagedReference
+	@OneToMany(mappedBy = "postagem")
 	private List<Comentario> comentarios;
 
-	public Post(Long id, String conteudo, LocalDate dataCriacao,
+	public Postagem(Long id, String conteudo, LocalDate dataCriacao,
 			Usuario usuario, List<Comentario> comentarios) {
 		this.id = id;
 		this.conteudo = conteudo;
@@ -48,7 +49,7 @@ public class Post {
 		this.comentarios = comentarios;
 	}
 
-	public Post() {
+	public Postagem() {
 		
 	}
 	
@@ -105,7 +106,7 @@ public class Post {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Post other = (Post) obj;
+		Postagem other = (Postagem) obj;
 		return Objects.equals(id, other.id);
 	}
 
