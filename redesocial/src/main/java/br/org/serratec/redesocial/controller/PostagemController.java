@@ -2,6 +2,7 @@ package br.org.serratec.redesocial.controller;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.org.serratec.redesocial.domain.Postagem;
+import br.org.serratec.redesocial.dto.PostagemDTO;
 import br.org.serratec.redesocial.repository.PostagemRepository;
 import jakarta.validation.Valid;
 
@@ -28,8 +30,10 @@ public class PostagemController {
 	private PostagemRepository postagemRepository;
 	
 	@GetMapping
-	public ResponseEntity<List<Postagem>> listar() {
-		return ResponseEntity.ok(postagemRepository.findAll());
+	public ResponseEntity<List<PostagemDTO>> listar() {
+		List<Postagem> postagens = postagemRepository.findAll();
+		List<PostagemDTO> postagensDto = postagens.stream().map(PostagemDTO :: new ).collect(Collectors.toList());
+		return ResponseEntity.ok(postagensDto);
 	}
 	
 	@GetMapping("/{id}")

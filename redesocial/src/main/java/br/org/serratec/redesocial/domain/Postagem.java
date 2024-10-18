@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import jakarta.persistence.Column;
@@ -36,6 +37,7 @@ public class Postagem {
 	@JoinColumn(name = "id_usuario")
 	private Usuario usuario;
 
+//	@JsonIgnore
 	@JsonManagedReference
 	@OneToMany(mappedBy = "postagem")
 	private List<Comentario> comentarios;
