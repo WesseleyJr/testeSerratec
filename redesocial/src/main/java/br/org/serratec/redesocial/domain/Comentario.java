@@ -16,25 +16,25 @@ import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
 
 @Entity
-@Table(name="comentario")
+@Table(name = "comentario")
 public class Comentario {
-	
+
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)	
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	
-	@NotBlank(message="Insira o texto")
-	@Column(nullable=false)
+
+	@NotBlank(message = "Insira o texto")
+	@Column(nullable = false)
 	private String texto;
-	
-	@Column(nullable= false)
+
+	@Column(nullable = false)
 	private LocalDate dataComentario;
-	
+
 	@JsonBackReference
 	@ManyToOne
 	@JoinColumn(name = "id_post")
 	private Postagem postagem;
-	
+
 	@ManyToOne
 	@JoinColumn(name = "id_usuario")
 	private Usuario usuario;
@@ -94,6 +94,6 @@ public class Comentario {
 			return false;
 		Comentario other = (Comentario) obj;
 		return Objects.equals(id, other.id);
-	}	
+	}
 
 }

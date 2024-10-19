@@ -6,6 +6,6 @@ import org.springframework.stereotype.Repository;
 import br.org.serratec.redesocial.domain.Relacionamento;
 
 @Repository
-public interface SeguidorRepository extends JpaRepository<Relacionamento, Long>{
+public interface SeguidorRepository extends JpaRepository<Relacionamento, Long> {
 
 }

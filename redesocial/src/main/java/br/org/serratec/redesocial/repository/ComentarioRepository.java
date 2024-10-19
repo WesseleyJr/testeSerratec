@@ -6,6 +6,6 @@ import org.springframework.stereotype.Repository;
 import br.org.serratec.redesocial.domain.Comentario;
 
 @Repository
-public interface ComentarioRepository extends JpaRepository<Comentario, Long>{
+public interface ComentarioRepository extends JpaRepository<Comentario, Long> {
 
 }

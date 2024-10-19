@@ -15,6 +15,9 @@ public class PostagemDTO {
 	private String usuarioNome;
 	private List<ComentarioDTO> comentarios;
 
+	public PostagemDTO() {
+
+	}
 
 	public PostagemDTO(Long id, String conteudo, LocalDate dataCriacao) {
 		this.id = id;
@@ -28,11 +31,11 @@ public class PostagemDTO {
 		this.dataCriacao = postagem.getDataCriacao();
 		this.usuarioNome = postagem.getUsuario().getNome();
 		this.comentarios = new ArrayList<>();
-		for(Comentario comentario : postagem.getComentarios()) {
+		for (Comentario comentario : postagem.getComentarios()) {
 			this.comentarios.add(new ComentarioDTO(comentario));
 		}
 	}
-	
+
 	public Long getId() {
 		return id;
 	}
@@ -72,7 +75,5 @@ public class PostagemDTO {
 	public void setComentarios(List<ComentarioDTO> comentarios) {
 		this.comentarios = comentarios;
 	}
-
-
 
 }

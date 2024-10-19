@@ -2,26 +2,14 @@ package br.org.serratec.redesocial.dto;
 
 import java.time.LocalDate;
 
-// Criar a classe com que os dados serao inseridos na hora de criar a conta
+public class UsuarioInserirDTO {
 
-
-public class UsuarioLoginDTO {
-
-	private Long id;
 	private String nome;
 	private String sobrenome;
 	private String email;
 	private String senha;
 	private String confimaSenha;
 	private LocalDate dataNascimento;
-
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
 
 	public String getNome() {
 		return nome;

@@ -43,8 +43,7 @@ public class Postagem {
 	@OneToMany(mappedBy = "postagem", fetch = FetchType.EAGER)
 	private List<Comentario> comentarios;
 
-	public Postagem(Long id, String conteudo, LocalDate dataCriacao,
-			Usuario usuario, List<Comentario> comentarios) {
+	public Postagem(Long id, String conteudo, LocalDate dataCriacao, Usuario usuario, List<Comentario> comentarios) {
 		this.id = id;
 		this.conteudo = conteudo;
 		this.dataCriacao = dataCriacao;
@@ -53,9 +52,9 @@ public class Postagem {
 	}
 
 	public Postagem() {
-		
+
 	}
-	
+
 	public Long getId() {
 		return id;
 	}
