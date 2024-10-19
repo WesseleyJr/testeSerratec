@@ -8,7 +8,7 @@ public class UsuarioInserirDTO {
 	private String sobrenome;
 	private String email;
 	private String senha;
-	private String confimaSenha;
+	private String confirmaSenha;
 	private LocalDate dataNascimento;
 
 	public String getNome() {
@@ -43,12 +43,12 @@ public class UsuarioInserirDTO {
 		this.senha = senha;
 	}
 
-	public String getConfimaSenha() {
-		return confimaSenha;
+	public String getConfirmaSenha() {
+		return confirmaSenha;
 	}
 
-	public void setConfimaSenha(String confimaSenha) {
-		this.confimaSenha = confimaSenha;
+	public void setConfirmaSenha(String confirmaSenha) {
+		this.confirmaSenha = confirmaSenha;
 	}
 
 	public LocalDate getDataNascimento() {
