@@ -1,6 +1,8 @@
 package br.org.serratec.redesocial.controller;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -12,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.org.serratec.redesocial.domain.Seguidor;
 import br.org.serratec.redesocial.domain.Usuario;
+import br.org.serratec.redesocial.dto.SeguidorDTO;
 import br.org.serratec.redesocial.dto.SeguidorInserirDTO;
 import br.org.serratec.redesocial.repository.SeguidorRepository;
 import br.org.serratec.redesocial.repository.UsuarioRepository;
@@ -26,6 +29,14 @@ public class SeguidorController {
 
 	@Autowired
 	private UsuarioRepository usuarioRepository;
+	
+	@GetMapping
+	public ResponseEntity<List<SeguidorDTO>> listar(){
+		List<Seguidor> seguidores = seguidorRepository.findAll();
+		List<SeguidorDTO> seguidoresDTO = seguidores.stream().map(SeguidorDTO :: new).collect(Collectors.toList());
+		
+		return ResponseEntity.ok(seguidoresDTO);
+	}
 	
 	@PostMapping
 	public ResponseEntity<SeguidorInserirDTO> seguir(@Valid @RequestBody SeguidorInserirDTO seguidorInserirDTO) {

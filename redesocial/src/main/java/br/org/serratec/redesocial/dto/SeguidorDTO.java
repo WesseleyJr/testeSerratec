@@ -3,38 +3,40 @@ package br.org.serratec.redesocial.dto;
 import java.time.LocalDate;
 
 import br.org.serratec.redesocial.domain.Seguidor;
-import br.org.serratec.redesocial.domain.Usuario;
 
 public class SeguidorDTO {
 
-	private Long id;
+	private Long idUsuarioSeguido;
+	private Long idUsuarioSeguidor;
 	private LocalDate dataInicioSeguimento;
-	private Usuario usuarioSeguidor;
-	private Usuario usuarioSeguido;
-
+	
 	public SeguidorDTO() {
 	}
 
-	public SeguidorDTO(Long id, LocalDate dataInicioSeguimento, Usuario usuarioSeguidor, Usuario usuarioSeguido) {
-		this.id = id;
+	public SeguidorDTO(LocalDate dataInicioSeguimento) {
 		this.dataInicioSeguimento = dataInicioSeguimento;
-		this.usuarioSeguidor = usuarioSeguidor;
-		this.usuarioSeguido = usuarioSeguido;
 	}
-
+	
 	public SeguidorDTO(Seguidor seguidor) {
-		this.id = seguidor.getId();
 		this.dataInicioSeguimento = seguidor.getDataInicioSeguimento();
-		this.usuarioSeguidor = seguidor.getUsuarioSeguidor();
-		this.usuarioSeguido = seguidor.getUsuarioSeguido();
+		this.idUsuarioSeguido = seguidor.getUsuarioSeguido().getId();
+		this.idUsuarioSeguidor = seguidor.getUsuarioSeguidor().getId();
 	}
 
-	public Long getId() {
-		return id;
+	public Long getIdUsuarioSeguido() {
+		return idUsuarioSeguido;
 	}
 
-	public void setId(Long id) {
-		this.id = id;
+	public void setIdUsuarioSeguido(Long idUsuarioSeguido) {
+		this.idUsuarioSeguido = idUsuarioSeguido;
+	}
+
+	public Long getIdUsuarioSeguidor() {
+		return idUsuarioSeguidor;
+	}
+
+	public void setIdUsuarioSeguidor(Long idUsuarioSeguidor) {
+		this.idUsuarioSeguidor = idUsuarioSeguidor;
 	}
 
 	public LocalDate getDataInicioSeguimento() {
@@ -44,21 +46,7 @@ public class SeguidorDTO {
 	public void setDataInicioSeguimento(LocalDate dataInicioSeguimento) {
 		this.dataInicioSeguimento = dataInicioSeguimento;
 	}
-
-	public Usuario getUsuarioSeguidor() {
-		return usuarioSeguidor;
-	}
-
-	public void setUsuarioSeguidor(Usuario usuarioSeguidor) {
-		this.usuarioSeguidor = usuarioSeguidor;
-	}
-
-	public Usuario getUsuarioSeguido() {
-		return usuarioSeguido;
-	}
-
-	public void setUsuarioSeguido(Usuario usuarioSeguido) {
-		this.usuarioSeguido = usuarioSeguido;
-	}
-
+	
+	
+	
 }
