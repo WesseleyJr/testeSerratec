@@ -1,5 +1,7 @@
 package br.org.serratec.redesocial.dto;
 
+import java.util.List;
+
 import br.org.serratec.redesocial.domain.Usuario;
 
 public class UsuarioDTO {

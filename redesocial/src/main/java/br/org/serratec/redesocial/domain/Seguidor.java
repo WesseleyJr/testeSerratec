@@ -3,11 +3,13 @@ package br.org.serratec.redesocial.domain;
 import java.time.LocalDate;
 import java.util.Objects;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "relacionamento")
-public class Relacionamento {
+@Table(name = "seguidor")
+public class Seguidor {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -17,17 +19,17 @@ public class Relacionamento {
 	private LocalDate dataInicioSeguimento;
 
 	@ManyToOne
-	@JoinColumn(name = "seguidor", nullable = false)
+	@JoinColumn(name = "idSeguidor", nullable = false)
 	private Usuario usuarioSeguidor;
 
 	@ManyToOne
-	@JoinColumn(name = "seguido", nullable = false)
+	@JoinColumn(name = "idSeguido", nullable = false)
 	private Usuario usuarioSeguido;
 
-	public Relacionamento() {
+	public Seguidor() {
 	}
 
-	public Relacionamento(LocalDate dataInicioSeguimento, Usuario usuarioSeguidor, Usuario usuarioSeguido) {
+	public Seguidor(LocalDate dataInicioSeguimento, Usuario usuarioSeguidor, Usuario usuarioSeguido) {
 		this.dataInicioSeguimento = dataInicioSeguimento;
 		this.usuarioSeguidor = usuarioSeguidor;
 		this.usuarioSeguido = usuarioSeguido;
@@ -78,7 +80,7 @@ public class Relacionamento {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Relacionamento other = (Relacionamento) obj;
+		Seguidor other = (Seguidor) obj;
 		return Objects.equals(id, other.id);
 	}
 }

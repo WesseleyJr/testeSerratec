@@ -2,7 +2,7 @@ package br.org.serratec.redesocial.dto;
 
 import java.time.LocalDate;
 
-import br.org.serratec.redesocial.domain.Relacionamento;
+import br.org.serratec.redesocial.domain.Seguidor;
 import br.org.serratec.redesocial.domain.Usuario;
 
 public class SeguidorDTO {
@@ -22,11 +22,11 @@ public class SeguidorDTO {
 		this.usuarioSeguido = usuarioSeguido;
 	}
 
-	public SeguidorDTO(Relacionamento relacionamento) {
-		this.id = relacionamento.getId();
-		this.dataInicioSeguimento = relacionamento.getDataInicioSeguimento();
-		this.usuarioSeguidor = relacionamento.getUsuarioSeguidor();
-		this.usuarioSeguido = relacionamento.getUsuarioSeguido();
+	public SeguidorDTO(Seguidor seguidor) {
+		this.id = seguidor.getId();
+		this.dataInicioSeguimento = seguidor.getDataInicioSeguimento();
+		this.usuarioSeguidor = seguidor.getUsuarioSeguidor();
+		this.usuarioSeguido = seguidor.getUsuarioSeguido();
 	}
 
 	public Long getId() {

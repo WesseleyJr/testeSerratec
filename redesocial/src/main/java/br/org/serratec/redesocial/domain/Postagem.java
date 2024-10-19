@@ -7,6 +7,7 @@ import java.util.Objects;
 //import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -40,7 +41,7 @@ public class Postagem {
 
 //	@JsonIgnore
 	@JsonManagedReference
-	@OneToMany(mappedBy = "postagem", fetch = FetchType.EAGER)
+	@OneToMany(mappedBy = "postagem", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	private List<Comentario> comentarios;
 
 	public Postagem(Long id, String conteudo, LocalDate dataCriacao, Usuario usuario, List<Comentario> comentarios) {
