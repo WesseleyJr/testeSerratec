@@ -1,5 +1,6 @@
 package br.org.serratec.redesocial.controller;
 
+import java.net.URI;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -16,15 +17,18 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import br.org.serratec.redesocial.domain.Comentario;
 import br.org.serratec.redesocial.domain.Postagem;
 import br.org.serratec.redesocial.domain.Usuario;
 import br.org.serratec.redesocial.dto.ComentarioDTO;
 import br.org.serratec.redesocial.dto.ComentarioInserirDTO;
+import br.org.serratec.redesocial.dto.UsuarioDTO;
 import br.org.serratec.redesocial.repository.ComentarioRepository;
 import br.org.serratec.redesocial.repository.PostagemRepository;
 import br.org.serratec.redesocial.repository.UsuarioRepository;
+import br.org.serratec.redesocial.service.ComentarioService;
 import jakarta.validation.Valid;
 
 @RestController
@@ -32,76 +36,44 @@ import jakarta.validation.Valid;
 public class ComentarioController {
 
 	@Autowired
-	private ComentarioRepository comentarioRepository;
-	
-	@Autowired
-	private UsuarioRepository usuarioRepository;
-	
-	@Autowired
-	private PostagemRepository postagemRepository;
+	private ComentarioService comentarioService;
 	
 	@GetMapping
 	public ResponseEntity<List<ComentarioDTO>> listar() {
-		List<Comentario> comentarios = comentarioRepository.findAll();
-		List<ComentarioDTO> comentariosDto = comentarios.stream().map(ComentarioDTO :: new).collect(Collectors.toList());
-		return ResponseEntity.ok(comentariosDto);
+		return ResponseEntity.ok(comentarioService.findAll());
 	}
 	
 	@GetMapping("/{id}")
-	public ResponseEntity<Comentario> buscar(@PathVariable Long id) {
-		Optional<Comentario> comentarioOpt = comentarioRepository.findById(id);
-		if (comentarioOpt.isPresent()) {
-			return ResponseEntity.ok(comentarioOpt.get());
+	public ResponseEntity<ComentarioDTO> buscar(@PathVariable Long id) {
+		ComentarioDTO comentarioDTO = comentarioService.buscar(id);
+		if (comentarioDTO != null) {
+			return ResponseEntity.ok(comentarioDTO);
 		}
 		return ResponseEntity.notFound().build();
 	}
 	
 	@PostMapping
-	@ResponseStatus(HttpStatus.CREATED)
-	public ResponseEntity<ComentarioInserirDTO> adicionar(@Valid @RequestBody ComentarioInserirDTO comentarioInserirDTO) {
-		Optional<Usuario> usuario = usuarioRepository.findById(comentarioInserirDTO.getIdUsuario());
-		Optional<Postagem> postagemOP = postagemRepository.findById(comentarioInserirDTO.getIdPostagem());
-		
-		if (!usuario.isPresent() || !postagemOP.isPresent()) {
-			return ResponseEntity.notFound().build();
-		}
-		
-		Comentario comentario = new Comentario();
-		
-		comentario.setTexto(comentarioInserirDTO.getTexto());
-		comentario.setDataComentario(comentarioInserirDTO.getDataComentario());
-		comentario.setUsuario(usuario.get());
-		comentario.setPost(postagemOP.get());
-		
-		comentario = comentarioRepository.save(comentario);
-		
-		Postagem postagem = postagemOP.get();
-		
-		postagem.getComentarios().add(comentario);
-
-		
-		return ResponseEntity.ok().body(new ComentarioInserirDTO(comentario));
-		
-		
-		
+	public ResponseEntity<ComentarioDTO> adicionar(@Valid @RequestBody ComentarioInserirDTO comentarioInserirDTO) {
+		ComentarioDTO comentarioDTO = comentarioService.inserir(comentarioInserirDTO);
+		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(comentarioDTO.getId())
+				.toUri();
+		return ResponseEntity.created(uri).body(comentarioDTO);
 	}
 	
 	@PutMapping("/{id}")
-	public ResponseEntity<Comentario> alterar(@PathVariable Long id, @Valid @RequestBody Comentario comentario) {
-		if (!comentarioRepository.existsById(id)) {
+	public ResponseEntity<ComentarioDTO> alterar(@PathVariable Long id, @Valid @RequestBody ComentarioInserirDTO comentarioInserirDTO) {
+		if (comentarioService.att(comentarioInserirDTO, id) == null) {
 			return ResponseEntity.notFound().build();
 		}
-		comentario.setId(id);
-		comentario = comentarioRepository.save(comentario);
-		return ResponseEntity.ok(comentario);
+		return ResponseEntity.ok(comentarioService.att(comentarioInserirDTO, id));
 	}
 	
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Comentario> deletar(@PathVariable Long id) {
-		if (!comentarioRepository.existsById(id)) {
+		if (comentarioService.del(id) == null) {
 			return ResponseEntity.notFound().build();
 		}
-		comentarioRepository.deleteById(id);
+		comentarioService.del(id);
 		return ResponseEntity.ok().build();
 	}
 }

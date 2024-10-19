@@ -1,5 +1,6 @@
 package br.org.serratec.redesocial.controller;
 
+import java.net.URI;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -16,13 +17,17 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import br.org.serratec.redesocial.domain.Postagem;
 import br.org.serratec.redesocial.domain.Usuario;
+import br.org.serratec.redesocial.dto.ComentarioDTO;
 import br.org.serratec.redesocial.dto.PostagemDTO;
 import br.org.serratec.redesocial.dto.PostagemInserirDTO;
 import br.org.serratec.redesocial.repository.PostagemRepository;
 import br.org.serratec.redesocial.repository.UsuarioRepository;
+import br.org.serratec.redesocial.service.ComentarioService;
+import br.org.serratec.redesocial.service.PostagemService;
 import jakarta.validation.Valid;
 
 @RestController
@@ -30,23 +35,18 @@ import jakarta.validation.Valid;
 public class PostagemController {
 	
 	@Autowired
-	private PostagemRepository postagemRepository;
-	
-	@Autowired
-	private UsuarioRepository usuarioRepository;
+	private PostagemService postagemService;
 	
 	@GetMapping
 	public ResponseEntity<List<PostagemDTO>> listar() {
-		List<Postagem> postagens = postagemRepository.findAll();
-		List<PostagemDTO> postagensDto = postagens.stream().map(PostagemDTO :: new ).collect(Collectors.toList());
-		return ResponseEntity.ok(postagensDto);
+		return ResponseEntity.ok(postagemService.findAll());
 	}
 	
 	@GetMapping("/{id}")
-	public ResponseEntity<Postagem> buscar(@PathVariable Long id) {
-		Optional<Postagem> postOpt = postagemRepository.findById(id);
-		if (postOpt.isPresent()) {
-			return ResponseEntity.ok(postOpt.get());
+	public ResponseEntity<PostagemDTO> buscar(@PathVariable Long id) {
+		PostagemDTO postagemDTO = postagemService.buscar(id);
+		if (postagemDTO != null) {
+			return ResponseEntity.ok(postagemDTO);
 		}
 		return ResponseEntity.notFound().build();
 	}
@@ -54,40 +54,25 @@ public class PostagemController {
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
 	public ResponseEntity<PostagemInserirDTO> adicionar(@Valid @RequestBody PostagemInserirDTO postagemInserirDTO) {
-		Optional<Usuario> usuario = usuarioRepository.findById(postagemInserirDTO.getIdUsuario());
-		
-		if (!usuario.isPresent()) {
-			return ResponseEntity.notFound().build();
-		}
-		
-		Postagem postagem = new Postagem();
-		
-		postagem.setConteudo(postagemInserirDTO.getConteudo());
-		postagem.setDataCriacao(postagemInserirDTO.getDataCriacao());
-		postagem.setUsuario(usuario.get());
-		
-		postagem = postagemRepository.save(postagem);
-		
-		 return ResponseEntity.ok().body(new PostagemInserirDTO(postagem));
-		
+		PostagemInserirDTO postagemDTO = postagemService.inserir(postagemInserirDTO);
+		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(postagemDTO.getId()).toUri();
+		return ResponseEntity.created(uri).body(postagemDTO);
 	}
 	
 	@PutMapping("/{id}")
-	public ResponseEntity<Postagem> alterar(@PathVariable Long id, @Valid @RequestBody Postagem postagem) {
-		if (!postagemRepository.existsById(id)) {
+	public ResponseEntity<PostagemInserirDTO> alterar(@PathVariable Long id, @Valid @RequestBody PostagemInserirDTO postagemInserirDTO) {
+		if (postagemService.att(postagemInserirDTO, id) == null) {
 			return ResponseEntity.notFound().build();
 		}
-		postagem.setId(id);
-		postagem = postagemRepository.save(postagem);
-		return ResponseEntity.ok(postagem);
+		return ResponseEntity.ok(postagemService.att(postagemInserirDTO, id));
 	}
 	
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Postagem> deletar(@PathVariable Long id) {
-		if (!postagemRepository.existsById(id)) {
+		if (postagemService.del(id) == null) {
 			return ResponseEntity.notFound().build();
 		}
-		postagemRepository.deleteById(id);
+		postagemService.del(id);
 		return ResponseEntity.ok().build();
 	}
 }

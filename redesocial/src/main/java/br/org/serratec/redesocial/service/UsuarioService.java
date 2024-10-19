@@ -53,8 +53,8 @@ public class UsuarioService {
 		return usuarioDTO;
 	}
 	
+	@Transactional
 	public Usuario att(Usuario usuario, Long id){
-		
 		if (!usuarioRepository.existsById(id)) {
 			return null;
 		}
@@ -63,6 +63,7 @@ public class UsuarioService {
 		return usuario;
 	}
 	
+	@Transactional
 	public Integer del(Long id) {
 		if (!usuarioRepository.existsById(id)) {
 			return null;

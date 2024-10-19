@@ -30,9 +30,6 @@ public class UsuarioController {
 	@Autowired
 	private UsuarioService usuarioService;
 
-	@Autowired
-	private UsuarioRepository usuarioRepository;
-
 	@GetMapping
 	public ResponseEntity<List<UsuarioDTO>> listar() {
 		return ResponseEntity.ok(usuarioService.findAll());
