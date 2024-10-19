@@ -37,6 +37,7 @@ public class Usuario {
 
 	@Column(name = "data_nascimento")
 	private LocalDate dataNascimento;
+	
 
 	public Usuario() {
 	}
