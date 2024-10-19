@@ -4,20 +4,21 @@ import br.org.serratec.redesocial.domain.Seguidor;
 
 public class SeguidorUsuarioDTO {
 	private String nomeUsuarioSeguidor;
+	private String sobrenomeSeguidor;
 	private Long idUsuarioSeguidor;
-	
-	
 	
 	public SeguidorUsuarioDTO() {
 	}
 	
-	public SeguidorUsuarioDTO(String nomeUsuarioSeguidor, Long idUsuarioSeguidor) {
+	public SeguidorUsuarioDTO(String nomeUsuarioSeguidor, String sobrenomeSeguidor, Long idUsuarioSeguidor) {
 		this.nomeUsuarioSeguidor = nomeUsuarioSeguidor;
+		this.sobrenomeSeguidor = sobrenomeSeguidor;
 		this.idUsuarioSeguidor = idUsuarioSeguidor;
 	}
 	
 	public SeguidorUsuarioDTO(Seguidor seguidor) {
 		this.nomeUsuarioSeguidor = seguidor.getUsuarioSeguidor().getNome();
+		this.sobrenomeSeguidor = seguidor.getUsuarioSeguidor().getSobrenome();
 		this.idUsuarioSeguidor = seguidor.getUsuarioSeguidor().getId();
 	}
 	
@@ -33,6 +34,15 @@ public class SeguidorUsuarioDTO {
 	public void setIdUsuarioSeguidor(Long idUsuarioSeguidor) {
 		this.idUsuarioSeguidor = idUsuarioSeguidor;
 	}
+
+	public String getSobrenomeSeguidor() {
+		return sobrenomeSeguidor;
+	}
+
+	public void setSobrenomeSeguidor(String sobrenomeSeguidor) {
+		this.sobrenomeSeguidor = sobrenomeSeguidor;
+	}
+	
 	
 	
 }

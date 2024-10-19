@@ -1,9 +1,7 @@
 package br.org.serratec.redesocial.dto;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.time.LocalDate;
 
-import br.org.serratec.redesocial.domain.Seguidor;
 import br.org.serratec.redesocial.domain.Usuario;
 
 public class UsuarioDTO {
@@ -12,32 +10,26 @@ public class UsuarioDTO {
 	private String nome;
 	private String sobrenome;
 	private Integer qntSeguidores = 0;
-	private List<SeguidorUsuarioDTO> seguidores;
+	private LocalDate dataNascimento;
 
 	public UsuarioDTO() {
 	}
 
-
-
-	public UsuarioDTO(Long id, String nome, String sobrenome, Integer qntSeguidores) {
+	public UsuarioDTO(Long id, String nome, String sobrenome, Integer qntSeguidores, LocalDate dataNascimento) {
 		super();
 		this.id = id;
 		this.nome = nome;
 		this.sobrenome = sobrenome;
 		this.qntSeguidores = qntSeguidores;
+		this.dataNascimento = dataNascimento;
 	}
-
-
 
 	public UsuarioDTO(Usuario usuario) {
 		this.id = usuario.getId();
 		this.nome = usuario.getNome();
 		this.sobrenome = usuario.getSobrenome();
-		this.seguidores = new ArrayList<>();
-		for (Seguidor seguidor : usuario.getSeguidores()) {
-			this.seguidores.add(new SeguidorUsuarioDTO(seguidor));
-			this.qntSeguidores++;
-		}
+		this.dataNascimento = usuario.getDataNascimento();
+		this.qntSeguidores = usuario.getSeguidores().size();
 
 	}
 
@@ -65,26 +57,20 @@ public class UsuarioDTO {
 		this.id = id;
 	}
 
-	public List<SeguidorUsuarioDTO> getSeguidores() {
-		return seguidores;
-	}
-
-	public void setSeguidores(List<SeguidorUsuarioDTO> seguidores) {
-		this.seguidores = seguidores;
-	}
-
-
-
 	public Integer getQntSeguidores() {
 		return qntSeguidores;
 	}
 
-
-
 	public void setQntSeguidores(Integer qntSeguidores) {
 		this.qntSeguidores = qntSeguidores;
 	}
-	
-	
+
+	public LocalDate getDataNascimento() {
+		return dataNascimento;
+	}
+
+	public void setDataNascimento(LocalDate dataNascimento) {
+		this.dataNascimento = dataNascimento;
+	}
 
 }

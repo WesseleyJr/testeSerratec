@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import br.org.serratec.redesocial.domain.Usuario;
@@ -27,8 +26,13 @@ public class UsuarioService {
 		return usuariosDTO;
 	}
 
-	public Optional<Usuario> buscar(Long id) {
-		return usuarioRepository.findById(id);
+	public UsuarioDTO buscar(Long id) {
+		Optional<Usuario> usuarioOpt = usuarioRepository.findById(id);
+		if (!usuarioOpt.isPresent()) {
+			return null;
+		}
+
+		return new UsuarioDTO(usuarioOpt.get());
 	}
 
 	@Transactional
@@ -47,14 +51,14 @@ public class UsuarioService {
 		usuario.setDataNascimento(usuarioInserirDTO.getDataNascimento());
 
 		usuario = usuarioRepository.save(usuario);
-		
+
 		UsuarioDTO usuarioDTO = new UsuarioDTO(usuario);
-		
+
 		return usuarioDTO;
 	}
-	
+
 	@Transactional
-	public Usuario att(Usuario usuario, Long id){
+	public Usuario att(Usuario usuario, Long id) {
 		if (!usuarioRepository.existsById(id)) {
 			return null;
 		}
@@ -62,7 +66,7 @@ public class UsuarioService {
 		usuario = usuarioRepository.save(usuario);
 		return usuario;
 	}
-	
+
 	@Transactional
 	public Integer del(Long id) {
 		if (!usuarioRepository.existsById(id)) {

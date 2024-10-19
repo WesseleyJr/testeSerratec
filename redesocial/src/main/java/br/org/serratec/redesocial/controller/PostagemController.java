@@ -2,8 +2,6 @@ package br.org.serratec.redesocial.controller;
 
 import java.net.URI;
 import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -20,13 +18,8 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import br.org.serratec.redesocial.domain.Postagem;
-import br.org.serratec.redesocial.domain.Usuario;
-import br.org.serratec.redesocial.dto.ComentarioDTO;
 import br.org.serratec.redesocial.dto.PostagemDTO;
 import br.org.serratec.redesocial.dto.PostagemInserirDTO;
-import br.org.serratec.redesocial.repository.PostagemRepository;
-import br.org.serratec.redesocial.repository.UsuarioRepository;
-import br.org.serratec.redesocial.service.ComentarioService;
 import br.org.serratec.redesocial.service.PostagemService;
 import jakarta.validation.Valid;
 

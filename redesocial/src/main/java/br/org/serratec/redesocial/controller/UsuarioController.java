@@ -2,7 +2,6 @@ package br.org.serratec.redesocial.controller;
 
 import java.net.URI;
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -19,7 +18,6 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import br.org.serratec.redesocial.domain.Usuario;
 import br.org.serratec.redesocial.dto.UsuarioDTO;
 import br.org.serratec.redesocial.dto.UsuarioInserirDTO;
-import br.org.serratec.redesocial.repository.UsuarioRepository;
 import br.org.serratec.redesocial.service.UsuarioService;
 import jakarta.validation.Valid;
 
@@ -36,10 +34,11 @@ public class UsuarioController {
 	}
 
 	@GetMapping("/{id}")
-	public ResponseEntity<Usuario> buscar(@PathVariable Long id) {
-		Optional<Usuario> usuarioOpt = usuarioService.buscar(id);
-		if (usuarioOpt.isPresent()) {
-			return ResponseEntity.ok(usuarioOpt.get());
+	public ResponseEntity<UsuarioDTO> buscar(@PathVariable Long id) {
+		UsuarioDTO usuarioDTO = usuarioService.buscar(id);
+
+		if (usuarioDTO != null) {
+			return ResponseEntity.ok(usuarioDTO);
 		}
 		return ResponseEntity.notFound().build();
 	}
@@ -66,7 +65,7 @@ public class UsuarioController {
 		if (usuarioService.del(id) == null) {
 			return ResponseEntity.notFound().build();
 		}
-		
+
 		usuarioService.del(id);
 		return ResponseEntity.ok().build();
 	}

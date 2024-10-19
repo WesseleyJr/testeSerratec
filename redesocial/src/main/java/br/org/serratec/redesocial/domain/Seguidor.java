@@ -3,7 +3,6 @@ package br.org.serratec.redesocial.domain;
 import java.time.LocalDate;
 import java.util.Objects;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import jakarta.persistence.*;
 

@@ -5,14 +5,12 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import br.org.serratec.redesocial.domain.Seguidor;
 import br.org.serratec.redesocial.domain.Usuario;
+import br.org.serratec.redesocial.dto.SeguidoUsuarioDTO;
 import br.org.serratec.redesocial.dto.SeguidorDTO;
 import br.org.serratec.redesocial.dto.SeguidorInserirDTO;
 import br.org.serratec.redesocial.repository.SeguidorRepository;
@@ -64,6 +62,12 @@ public class SeguidorService {
 		}
 		seguidorRepository.deleteById(id);
 		return 1;
+	}
+	
+	public SeguidoUsuarioDTO seguidoresPorUsuario(Long id) {
+		  Optional<Seguidor> seguidorOpt = seguidorRepository.findById(id);
+		return new SeguidoUsuarioDTO(seguidorOpt.get());
+		
 	}
 
 }
