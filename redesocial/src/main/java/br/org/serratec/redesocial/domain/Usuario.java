@@ -16,6 +16,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "usuario")
@@ -26,22 +27,23 @@ public class Usuario {
 	private Long id;
 
 	@Column(nullable = false)
-	@NotBlank(message = "O campo deve ser preenchido!")
+	@NotBlank(message = "O nome deve ser preenchido!")
 	private String nome;
 
 	@Column(nullable = false)
-	@NotBlank(message = "O campo deve ser preenchido!")
+	@NotBlank(message = "O sobrenome deve ser preenchido!")
 	private String sobrenome;
 
 	@Column(nullable = false)
-	@NotBlank(message = "O campo deve ser preenchido!")
+	@NotBlank(message = "O email deve ser preenchido!")
 	private String email;
 
 	@Column(nullable = false)
-	@NotBlank(message = "O campo deve ser preenchido!")
+	@NotBlank(message = "O senha deve ser preenchida!")
 	private String senha;
 
 	@Column(name = "data_nascimento")
+	@NotNull(message = "A data deve ser preenchida!")
 	private LocalDate dataNascimento;
 
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "usuarioSeguido", fetch = FetchType.EAGER)

@@ -25,6 +25,7 @@ import br.org.serratec.redesocial.domain.Usuario;
 import br.org.serratec.redesocial.dto.ComentarioDTO;
 import br.org.serratec.redesocial.dto.ComentarioInserirDTO;
 import br.org.serratec.redesocial.dto.UsuarioDTO;
+import br.org.serratec.redesocial.exception.ErroResposta;
 import br.org.serratec.redesocial.repository.ComentarioRepository;
 import br.org.serratec.redesocial.repository.PostagemRepository;
 import br.org.serratec.redesocial.repository.UsuarioRepository;
@@ -37,21 +38,19 @@ public class ComentarioController {
 
 	@Autowired
 	private ComentarioService comentarioService;
-	
+
 	@GetMapping
 	public ResponseEntity<List<ComentarioDTO>> listar() {
 		return ResponseEntity.ok(comentarioService.findAll());
 	}
-	
+
 	@GetMapping("/{id}")
 	public ResponseEntity<ComentarioDTO> buscar(@PathVariable Long id) {
 		ComentarioDTO comentarioDTO = comentarioService.buscar(id);
-		if (comentarioDTO != null) {
-			return ResponseEntity.ok(comentarioDTO);
-		}
-		return ResponseEntity.notFound().build();
+		return ResponseEntity.ok(comentarioDTO);
+
 	}
-	
+
 	@PostMapping
 	public ResponseEntity<ComentarioDTO> adicionar(@Valid @RequestBody ComentarioInserirDTO comentarioInserirDTO) {
 		ComentarioDTO comentarioDTO = comentarioService.inserir(comentarioInserirDTO);
@@ -59,20 +58,18 @@ public class ComentarioController {
 				.toUri();
 		return ResponseEntity.created(uri).body(comentarioDTO);
 	}
-	
+
 	@PutMapping("/{id}")
-	public ResponseEntity<ComentarioDTO> alterar(@PathVariable Long id, @Valid @RequestBody ComentarioInserirDTO comentarioInserirDTO) {
-		if (comentarioService.att(comentarioInserirDTO, id) == null) {
-			return ResponseEntity.notFound().build();
-		}
-		return ResponseEntity.ok(comentarioService.att(comentarioInserirDTO, id));
+	public ResponseEntity<ComentarioDTO> alterar(@PathVariable Long id,
+			@Valid @RequestBody ComentarioInserirDTO comentarioInserirDTO) {
+
+		ComentarioDTO comentarioDTO = comentarioService.att(comentarioInserirDTO, id);
+		return ResponseEntity.ok(comentarioDTO);
 	}
-	
+
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Comentario> deletar(@PathVariable Long id) {
-		if (comentarioService.del(id) == null) {
-			return ResponseEntity.notFound().build();
-		}
+
 		comentarioService.del(id);
 		return ResponseEntity.ok().build();
 	}

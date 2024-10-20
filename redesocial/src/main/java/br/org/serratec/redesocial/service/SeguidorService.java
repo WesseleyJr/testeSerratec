@@ -13,6 +13,7 @@ import br.org.serratec.redesocial.domain.Usuario;
 import br.org.serratec.redesocial.dto.SeguidoUsuarioDTO;
 import br.org.serratec.redesocial.dto.SeguidorDTO;
 import br.org.serratec.redesocial.dto.SeguidorInserirDTO;
+import br.org.serratec.redesocial.exception.NotFoundException;
 import br.org.serratec.redesocial.repository.SeguidorRepository;
 import br.org.serratec.redesocial.repository.UsuarioRepository;
 import jakarta.transaction.Transactional;
@@ -34,14 +35,16 @@ public class SeguidorService {
 	}
 	
 	@Transactional
-	public SeguidorInserirDTO seguir(@Valid @RequestBody SeguidorInserirDTO seguidorInserirDTO) {
+	public SeguidorInserirDTO seguir(SeguidorInserirDTO seguidorInserirDTO) {
 		Optional<Usuario> seguidoOpt = usuarioRepository.findById(seguidorInserirDTO.getIdUsuarioSeguido());
 		Optional<Usuario> seguidorOpt = usuarioRepository.findById(seguidorInserirDTO.getIdUsuarioSeguidor());
 
-		if (!seguidoOpt.isPresent() || !seguidorOpt.isPresent()) {
-			return null;
+		if (!seguidoOpt.isPresent()) {
+			throw new NotFoundException("Usuario Seguido não encontrado, ID: " + seguidorInserirDTO.getIdUsuarioSeguido());
 		}
-
+		if (!seguidorOpt.isPresent()) {
+			throw new NotFoundException("Usuario Seguidor não encontrado, ID: " + seguidorInserirDTO.getIdUsuarioSeguidor());
+		}
 		Seguidor seg = new Seguidor();
 		seg.setDataInicioSeguimento(seguidorInserirDTO.getDataInicioSeguimento());
 		seg.setUsuarioSeguido(seguidoOpt.get());
@@ -58,7 +61,7 @@ public class SeguidorService {
 	@Transactional
 	public Integer del(Long id) {
 		if (!seguidorRepository.existsById(id)) {
-			return null;
+			throw new NotFoundException("Relacionamento não encontrado, ID: " + id);
 		}
 		seguidorRepository.deleteById(id);
 		return 1;
@@ -66,6 +69,10 @@ public class SeguidorService {
 	
 	public SeguidoUsuarioDTO seguidoresPorUsuario(Long id) {
 		  Optional<Seguidor> seguidorOpt = seguidorRepository.findById(id);
+		  if (!seguidorOpt.isPresent()) {
+				throw new NotFoundException("Usuario Seguido não encontrado, ID: " + id);
+			}
+		  
 		return new SeguidoUsuarioDTO(seguidorOpt.get());
 		
 	}

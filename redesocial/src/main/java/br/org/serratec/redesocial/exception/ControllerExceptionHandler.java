@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
@@ -42,6 +43,11 @@ public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
 	@ExceptionHandler(SenhaException.class)
 	protected ResponseEntity<Object> handleEmailExceptoin(SenhaException ex) {
 		return ResponseEntity.unprocessableEntity().body(ex.getMessage());
+	}
+	
+	@ExceptionHandler(NotFoundException.class)
+	public ResponseEntity<Object> handleNotFoundException(NotFoundException ex){
+		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
 	}
 
 }

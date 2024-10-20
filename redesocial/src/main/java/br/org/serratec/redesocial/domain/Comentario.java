@@ -14,6 +14,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "comentario")
@@ -27,16 +28,19 @@ public class Comentario {
 	@Column(nullable = false)
 	private String texto;
 
+	@NotNull(message = "Insira a data")
 	@Column(nullable = false)
-	private LocalDate dataComentario;
+	private LocalDate dataComentario; 
 
 	@JsonBackReference
 	@ManyToOne
 	@JoinColumn(name = "id_post")
+	@NotNull(message = "Insira o id da postagem")
 	private Postagem postagem;
 
 	@ManyToOne
 	@JoinColumn(name = "id_usuario")
+	@NotNull(message = "Insira o id do usuario")
 	private Usuario usuario;
 
 	public Long getId() {

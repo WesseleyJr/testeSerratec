@@ -36,11 +36,8 @@ public class UsuarioController {
 	@GetMapping("/{id}")
 	public ResponseEntity<UsuarioDTO> buscar(@PathVariable Long id) {
 		UsuarioDTO usuarioDTO = usuarioService.buscar(id);
+		return ResponseEntity.ok(usuarioDTO);
 
-		if (usuarioDTO != null) {
-			return ResponseEntity.ok(usuarioDTO);
-		}
-		return ResponseEntity.notFound().build();
 	}
 
 	@PostMapping
@@ -53,19 +50,12 @@ public class UsuarioController {
 
 	@PutMapping("/{id}")
 	public ResponseEntity<Usuario> atualizar(@PathVariable Long id, @Valid @RequestBody Usuario usuario) {
-		if (usuarioService.att(usuario, id) == null) {
-			return ResponseEntity.notFound().build();
-		}
-
-		return ResponseEntity.ok(usuarioService.att(usuario, id));
+		Usuario u = usuarioService.att(usuario, id);
+		return ResponseEntity.ok(u);
 	}
 
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Usuario> deletar(@PathVariable Long id) {
-		if (usuarioService.del(id) == null) {
-			return ResponseEntity.notFound().build();
-		}
-
 		usuarioService.del(id);
 		return ResponseEntity.ok().build();
 	}

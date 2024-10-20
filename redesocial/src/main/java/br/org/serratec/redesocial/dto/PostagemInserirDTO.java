@@ -3,12 +3,20 @@ package br.org.serratec.redesocial.dto;
 import java.time.LocalDate;
 
 import br.org.serratec.redesocial.domain.Postagem;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 public class PostagemInserirDTO {
 	
 	private Long id;
+	
+	@NotBlank(message = "Preencha o conteúdo")
 	private String conteudo;
+	
+	@NotNull(message = "Preencha a data")
 	private LocalDate dataCriacao;
+	
+	@NotNull(message = "Preencha o id do usuario")
 	private Long idUsuario;
 	
 	public PostagemInserirDTO() {

@@ -5,6 +5,7 @@ import java.util.Objects;
 
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "seguidor")
@@ -15,14 +16,17 @@ public class Seguidor {
 	private Long id;
 
 	@Column(nullable = false)
+	@NotNull(message = "Preencha a data")
 	private LocalDate dataInicioSeguimento;
 
 	@ManyToOne
 	@JoinColumn(name = "idSeguidor", nullable = false)
+	@NotNull(message = "Preencha o id do usuario seguidor")
 	private Usuario usuarioSeguidor;
 
 	@ManyToOne
 	@JoinColumn(name = "idSeguido", nullable = false)
+	@NotNull(message = "Preencha o id do usuario seguido")
 	private Usuario usuarioSeguido;
 
 	public Seguidor() {

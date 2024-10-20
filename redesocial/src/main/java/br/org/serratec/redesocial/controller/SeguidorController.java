@@ -34,11 +34,7 @@ public class SeguidorController {
 	
 	@GetMapping("/{idUsuario}")
 	public ResponseEntity<SeguidoUsuarioDTO> buscarSeguidoresPorUsuario(@PathVariable Long idUsuario){
-		SeguidoUsuarioDTO seguidoUsuarioDTO = seguidorService.seguidoresPorUsuario(idUsuario);
-		if (seguidoUsuarioDTO == null) {
-			return ResponseEntity.notFound().build();
-		}
-		
+		SeguidoUsuarioDTO seguidoUsuarioDTO = seguidorService.seguidoresPorUsuario(idUsuario);	
 		return ResponseEntity.ok(seguidoUsuarioDTO);
 	}
 	
@@ -51,9 +47,6 @@ public class SeguidorController {
 	
 	@DeleteMapping("/{id}")
 	public ResponseEntity<SeguidorDTO> deletar(@PathVariable Long id) {
-		if (seguidorService.del(id) == null) {
-			return ResponseEntity.notFound().build();
-		}
 		seguidorService.del(id);
 		return ResponseEntity.noContent().build();
 	}

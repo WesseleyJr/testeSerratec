@@ -19,6 +19,7 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "postagem")
@@ -33,10 +34,12 @@ public class Postagem {
 	private String conteudo;
 
 	@Column
+	@NotNull(message = "Preencha a data")
 	private LocalDate dataCriacao;
 
 	@ManyToOne
 	@JoinColumn(name = "id_usuario")
+	@NotNull(message = "Preencha o id do usuario")
 	private Usuario usuario;
 
 //	@JsonIgnore

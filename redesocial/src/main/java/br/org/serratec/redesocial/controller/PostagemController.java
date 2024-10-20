@@ -38,10 +38,7 @@ public class PostagemController {
 	@GetMapping("/{id}")
 	public ResponseEntity<PostagemDTO> buscar(@PathVariable Long id) {
 		PostagemDTO postagemDTO = postagemService.buscar(id);
-		if (postagemDTO != null) {
-			return ResponseEntity.ok(postagemDTO);
-		}
-		return ResponseEntity.notFound().build();
+		return ResponseEntity.ok(postagemDTO);
 	}
 	
 	@PostMapping
@@ -54,17 +51,12 @@ public class PostagemController {
 	
 	@PutMapping("/{id}")
 	public ResponseEntity<PostagemInserirDTO> alterar(@PathVariable Long id, @Valid @RequestBody PostagemInserirDTO postagemInserirDTO) {
-		if (postagemService.att(postagemInserirDTO, id) == null) {
-			return ResponseEntity.notFound().build();
-		}
-		return ResponseEntity.ok(postagemService.att(postagemInserirDTO, id));
+		PostagemInserirDTO p = postagemService.att(postagemInserirDTO, id);
+		return ResponseEntity.ok(p);
 	}
 	
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Postagem> deletar(@PathVariable Long id) {
-		if (postagemService.del(id) == null) {
-			return ResponseEntity.notFound().build();
-		}
 		postagemService.del(id);
 		return ResponseEntity.ok().build();
 	}

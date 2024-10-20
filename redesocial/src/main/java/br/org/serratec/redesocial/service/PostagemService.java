@@ -9,6 +9,7 @@ import br.org.serratec.redesocial.domain.Postagem;
 import br.org.serratec.redesocial.domain.Usuario;
 import br.org.serratec.redesocial.dto.PostagemDTO;
 import br.org.serratec.redesocial.dto.PostagemInserirDTO;
+import br.org.serratec.redesocial.exception.NotFoundException;
 import br.org.serratec.redesocial.repository.PostagemRepository;
 import br.org.serratec.redesocial.repository.UsuarioRepository;
 import jakarta.transaction.Transactional;
@@ -31,6 +32,10 @@ public class PostagemService {
 
 	public PostagemDTO buscar(Long id) {
 		Optional<Postagem> postagemOpt = postagemRepository.findById(id);
+		if (!postagemOpt.isPresent()) {
+			throw new NotFoundException("Postagem não encontrada, ID: " + id);
+		}
+		
 		return new PostagemDTO(postagemOpt.get());
 	}
 
@@ -38,7 +43,7 @@ public class PostagemService {
 	public PostagemInserirDTO inserir(PostagemInserirDTO postagemInserirDTO) {
 		Optional<Usuario> usuarioOpt = usuarioRepository.findById(postagemInserirDTO.getIdUsuario());
 		if (!usuarioOpt.isPresent()) {
-			return null;
+			throw new NotFoundException("Usuario não encontrado, ID: " + postagemInserirDTO.getIdUsuario());
 		}
 
 		Postagem postagem = new Postagem();
@@ -54,8 +59,12 @@ public class PostagemService {
 	public PostagemInserirDTO att(PostagemInserirDTO postagemInserirDTO, Long id) {
 		Optional<Postagem> postagemOpt = postagemRepository.findById(id);
 		Optional<Usuario> usuarioOpt = usuarioRepository.findById(postagemInserirDTO.getIdUsuario());
-		if (!usuarioOpt.isPresent() || !postagemOpt.isPresent()) {
-			return null;
+		if (!postagemOpt.isPresent()) {
+			throw new NotFoundException("Postagem não encontrada, ID: " + id);
+		}
+		
+		if (!usuarioOpt.isPresent()) {
+			throw new NotFoundException("Usuario não encontrado, ID: " + postagemInserirDTO.getIdUsuario());
 		}
 
 		Postagem postagem = postagemOpt.get();
@@ -70,7 +79,7 @@ public class PostagemService {
 	@Transactional
 	public Integer del(Long id) {
 		if (!postagemRepository.existsById(id)) {
-			return null;
+			throw new NotFoundException("Postagem não encontrada, ID: " + id);
 		}
 		postagemRepository.deleteById(id);
 		return 1;

@@ -3,13 +3,23 @@ package br.org.serratec.redesocial.dto;
 import java.time.LocalDate;
 
 import br.org.serratec.redesocial.domain.Comentario;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 public class ComentarioInserirDTO {
 	
 	private Long id;
+	
+	@NotBlank(message = "Insira o texto")
 	private String texto;
+	
+	@NotNull(message = "Insira a data")
 	private LocalDate dataComentario;
+	
+	@NotNull(message = "Insira o id do usuario")
 	private Long idUsuario;
+	
+	@NotNull(message = "Insira o id da postagem")
 	private Long idPostagem;
 	
 	public ComentarioInserirDTO() {

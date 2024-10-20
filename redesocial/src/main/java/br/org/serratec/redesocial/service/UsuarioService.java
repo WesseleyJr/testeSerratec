@@ -10,6 +10,7 @@ import br.org.serratec.redesocial.domain.Usuario;
 import br.org.serratec.redesocial.dto.UsuarioDTO;
 import br.org.serratec.redesocial.dto.UsuarioInserirDTO;
 import br.org.serratec.redesocial.exception.EmailException;
+import br.org.serratec.redesocial.exception.NotFoundException;
 import br.org.serratec.redesocial.exception.SenhaException;
 import br.org.serratec.redesocial.repository.UsuarioRepository;
 import jakarta.transaction.Transactional;
@@ -29,7 +30,7 @@ public class UsuarioService {
 	public UsuarioDTO buscar(Long id) {
 		Optional<Usuario> usuarioOpt = usuarioRepository.findById(id);
 		if (!usuarioOpt.isPresent()) {
-			return null;
+			throw new NotFoundException("Usuario não encontrado, ID: " + id);
 		}
 
 		return new UsuarioDTO(usuarioOpt.get());
@@ -60,7 +61,7 @@ public class UsuarioService {
 	@Transactional
 	public Usuario att(Usuario usuario, Long id) {
 		if (!usuarioRepository.existsById(id)) {
-			return null;
+			throw new NotFoundException("Usuario não encontrado, ID: " + id);
 		}
 		usuario.setId(id);
 		usuario = usuarioRepository.save(usuario);
@@ -70,7 +71,7 @@ public class UsuarioService {
 	@Transactional
 	public Integer del(Long id) {
 		if (!usuarioRepository.existsById(id)) {
-			return null;
+			throw new NotFoundException("Usuario não encontrado, ID: " + id);
 		}
 		usuarioRepository.deleteById(id);
 		return 1;
