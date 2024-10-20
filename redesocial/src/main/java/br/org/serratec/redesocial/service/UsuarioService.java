@@ -4,6 +4,9 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -25,10 +28,11 @@ public class UsuarioService {
 	@Autowired
 	private BCryptPasswordEncoder encoder;
 
-	public List<UsuarioDTO> findAll() {
-		List<Usuario> usuarios = usuarioRepository.findAll();
+	public Page<UsuarioDTO> findAll(Pageable pageable) {
+		Page<Usuario> usuarios = usuarioRepository.findAll(pageable);
 		List<UsuarioDTO> usuariosDTO = usuarios.stream().map(UsuarioDTO::new).toList();
-		return usuariosDTO;
+		return new PageImpl<>(usuariosDTO, pageable, usuarios.getTotalElements());
+	
 	}
 
 	public UsuarioDTO buscar(Long id) {

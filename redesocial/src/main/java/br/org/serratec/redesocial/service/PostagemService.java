@@ -4,7 +4,11 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+
 import br.org.serratec.redesocial.domain.Postagem;
 import br.org.serratec.redesocial.domain.Usuario;
 import br.org.serratec.redesocial.dto.PostagemDTO;
@@ -24,10 +28,10 @@ public class PostagemService {
 	private PostagemRepository postagemRepository;
 
 	
-	public List<PostagemDTO> findAll() {
-		List<Postagem> postagens = postagemRepository.findAll();
+	public Page<PostagemDTO> findAll(Pageable pageable) {
+		Page<Postagem> postagens = postagemRepository.findAll(pageable);
 		List<PostagemDTO> postagensDTO = postagens.stream().map(PostagemDTO::new).toList();
-		return postagensDTO;
+		return new PageImpl<>(postagensDTO, pageable, postagens.getTotalElements());
 	}
 
 	public PostagemDTO buscar(Long id) {

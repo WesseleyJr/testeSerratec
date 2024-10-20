@@ -5,8 +5,10 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import br.org.serratec.redesocial.domain.Seguidor;
 import br.org.serratec.redesocial.domain.Usuario;
@@ -17,7 +19,6 @@ import br.org.serratec.redesocial.exception.NotFoundException;
 import br.org.serratec.redesocial.repository.SeguidorRepository;
 import br.org.serratec.redesocial.repository.UsuarioRepository;
 import jakarta.transaction.Transactional;
-import jakarta.validation.Valid;
 
 @Service
 public class SeguidorService {
@@ -28,10 +29,10 @@ public class SeguidorService {
 	@Autowired
 	private UsuarioRepository usuarioRepository;
 	
-	public List<SeguidorDTO> findAll(){
-		List<Seguidor> seguidores = seguidorRepository.findAll();
+	public Page<SeguidorDTO> findAll(Pageable pageable){
+		Page<Seguidor> seguidores = seguidorRepository.findAll(pageable);
 		List<SeguidorDTO> seguidoresDTO = seguidores.stream().map(SeguidorDTO :: new).collect(Collectors.toList());
-		return seguidoresDTO;
+		return new PageImpl<>(seguidoresDTO, pageable, seguidores.getTotalElements());
 	}
 	
 	@Transactional

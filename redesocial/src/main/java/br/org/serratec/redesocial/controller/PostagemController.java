@@ -1,9 +1,12 @@
 package br.org.serratec.redesocial.controller;
 
 import java.net.URI;
-import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -30,9 +33,10 @@ public class PostagemController {
 	@Autowired
 	private PostagemService postagemService;
 	
-	@GetMapping
-	public ResponseEntity<List<PostagemDTO>> listar() {
-		return ResponseEntity.ok(postagemService.findAll());
+	@GetMapping("/pagina")
+	public ResponseEntity<Page<PostagemDTO>> listar(@PageableDefault(sort="id", direction = Sort.Direction.ASC, page = 0, size = 3) Pageable pageable) {
+		Page<PostagemDTO> postagem = postagemService.findAll(pageable);
+		return ResponseEntity.ok(postagem);
 	}
 	
 	@GetMapping("/{id}")

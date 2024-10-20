@@ -1,9 +1,12 @@
 package br.org.serratec.redesocial.controller;
 
 import java.net.URI;
-import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,9 +30,10 @@ public class SeguidorController {
 	@Autowired
 	private SeguidorService seguidorService;
 	
-	@GetMapping
-	public ResponseEntity<List<SeguidorDTO>> listar(){
-		return ResponseEntity.ok(seguidorService.findAll());
+	@GetMapping("/pagina")
+	public ResponseEntity<Page<SeguidorDTO>> listar(@PageableDefault(sort="id", direction = Sort.Direction.ASC, page = 0, size = 5) Pageable pageable){
+		Page<SeguidorDTO> seguidor = seguidorService.findAll(pageable);
+		return ResponseEntity.ok(seguidor);
 	}
 	
 	@GetMapping("/{idUsuario}")

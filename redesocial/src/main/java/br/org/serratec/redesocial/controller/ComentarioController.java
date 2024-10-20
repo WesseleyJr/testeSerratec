@@ -1,12 +1,12 @@
 package br.org.serratec.redesocial.controller;
 
 import java.net.URI;
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,20 +15,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import br.org.serratec.redesocial.domain.Comentario;
-import br.org.serratec.redesocial.domain.Postagem;
-import br.org.serratec.redesocial.domain.Usuario;
 import br.org.serratec.redesocial.dto.ComentarioDTO;
 import br.org.serratec.redesocial.dto.ComentarioInserirDTO;
-import br.org.serratec.redesocial.dto.UsuarioDTO;
-import br.org.serratec.redesocial.exception.ErroResposta;
-import br.org.serratec.redesocial.repository.ComentarioRepository;
-import br.org.serratec.redesocial.repository.PostagemRepository;
-import br.org.serratec.redesocial.repository.UsuarioRepository;
 import br.org.serratec.redesocial.service.ComentarioService;
 import jakarta.validation.Valid;
 
@@ -39,9 +31,10 @@ public class ComentarioController {
 	@Autowired
 	private ComentarioService comentarioService;
 
-	@GetMapping
-	public ResponseEntity<List<ComentarioDTO>> listar() {
-		return ResponseEntity.ok(comentarioService.findAll());
+	@GetMapping("/pagina")
+	public ResponseEntity<Page<ComentarioDTO>> listar(@PageableDefault(sort="id", direction = Sort.Direction.ASC, page = 0, size = 5) Pageable pageable) {
+		Page<ComentarioDTO> comentario = comentarioService.findAll(pageable);
+		return ResponseEntity.ok(comentario);
 	}
 
 	@GetMapping("/{id}")
