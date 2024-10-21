@@ -38,7 +38,9 @@ public class ConfigSegurança {
 		http.csrf(csrf -> csrf.disable()).cors((cors) -> cors.configurationSource(corsConfigurationSource()))
 				.authorizeHttpRequests(authorize -> authorize
 						.requestMatchers(HttpMethod.POST, "/usuario").permitAll()
+						.requestMatchers("/h2-console/**").permitAll()
 						.anyRequest().authenticated())
+						.headers(headers -> headers.frameOptions(frameOptions -> frameOptions.sameOrigin()))
 				.httpBasic(Customizer.withDefaults())
 				.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
@@ -49,7 +51,7 @@ public class ConfigSegurança {
 		JwtAuthorizationFilter jwtAuthorizationFilter = new JwtAuthorizationFilter(
 				authenticationManager(http.getSharedObject(AuthenticationConfiguration.class)), jwtUtil,
 				userDetailsService);
-
+		
 		http.addFilter(jwtAuthenticationFilter);
 		http.addFilter(jwtAuthorizationFilter);
 
